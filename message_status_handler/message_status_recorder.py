@@ -33,16 +33,15 @@ def record_message_status(json_data: dict) -> int:
                     f"Message {message_reference} does not exist"
                 )
 
-         #   batch_id = fetch_batch_id_for_message(cursor, message_reference)
-         #   if batch_id is not None:
-            else:
+            # batch_id = fetch_batch_id_for_message(cursor, message_reference)
+            if message_id is not None:
                 response_code = update_message_status(
                     cursor, message_reference
                 )
-          #  else:
-           #     logging.warning(
-            #        "Cannot update status of message %s", message_reference
-            #    )
+            else:
+                logging.warning(
+                    "Cannot update status of message %s", message_reference
+                )
 
     if response_code > 0:
         logging.error(

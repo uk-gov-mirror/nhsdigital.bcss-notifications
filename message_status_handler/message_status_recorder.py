@@ -36,7 +36,7 @@ def record_message_status(json_data: dict) -> int:
             batch_id = fetch_batch_id_for_message(cursor, message_reference)
             if batch_id is not None:
                 response_code = update_message_status(
-                    cursor, batch_id, message_reference
+                    cursor, message_reference
                 )
             else:
                 logging.warning(
@@ -89,19 +89,18 @@ def check_message_exists(cursor: Cursor, message_reference: str) -> str | None:
     return result[0] if result else None
 
 
-def update_message_status(cursor: Cursor, batch_id: str, message_reference: str) -> int:
+def update_message_status(cursor: Cursor, message_reference: str) -> int:
     var = cursor.var(int)
 
     cursor.execute(
         """
             begin
-                :out_val := pkg_notify_wrap.f_update_message_status(:in_val1, :in_val2, :in_val3);
+                :out_val := pkg_notify_wrap.f_update_message_status(:in_val1, :in_val2);
             end;
         """,
         {
-            "in_val1": batch_id,
-            "in_val2": message_reference,
-            "in_val3": "read",
+            "in_val1": message_reference,
+            "in_val2": "read",
             "out_val": var,
         },
     )

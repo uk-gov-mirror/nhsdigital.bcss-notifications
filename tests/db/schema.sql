@@ -87,8 +87,13 @@ CREATE OR REPLACE PACKAGE MPI_NOTIFY_USER.pkg_notify_wrap AS
     RETURN notify_message_definition.routing_plan_id%TYPE;
 
   FUNCTION f_update_message_status (
-    pi_batch_id         IN notify_message_queue.batch_id%TYPE,
     pi_message_id       IN notify_message_queue.message_id%TYPE,
+    pi_message_status   IN notify_message_queue.message_status%TYPE
+  )
+    RETURN message_types.message_type_id%TYPE;
+
+  FUNCTION f_update_batch_status (
+    pi_batch_id         IN notify_message_queue.batch_id%TYPE,
     pi_message_status   IN notify_message_queue.message_status%TYPE
   )
     RETURN message_types.message_type_id%TYPE;
@@ -152,28 +157,33 @@ CREATE OR REPLACE PACKAGE BODY MPI_NOTIFY_USER.pkg_notify_wrap AS
 	END f_get_next_batch;
 
   FUNCTION f_update_message_status (
-    pi_batch_id         IN notify_message_queue.batch_id%TYPE,
     pi_message_id       IN notify_message_queue.message_id%TYPE,
     pi_message_status   IN notify_message_queue.message_status%TYPE
   )
     RETURN message_types.message_type_id%TYPE IS
     v_error_id  message_types.message_type_id%TYPE := 0;
   BEGIN
-    IF pi_message_id IS NULL
-    THEN
+      UPDATE  notify_message_queue nmq
+      SET     nmq.message_status = pi_message_status,
+              nmq.read_datestamp = SYSTIMESTAMP
+      WHERE     nmq.message_id = pi_message_id;
+    RETURN  v_error_id;
+  END f_update_message_status;
+
+  FUNCTION f_update_batch_status (
+    pi_batch_id         IN notify_message_queue.batch_id%TYPE,
+    pi_message_status   IN notify_message_queue.message_status%TYPE
+  )
+    RETURN message_types.message_type_id%TYPE IS
+    v_error_id  message_types.message_type_id%TYPE := 0;
+  BEGIN
       UPDATE notify_message_queue nmq
       SET    nmq.message_status = pi_message_status,
              nmq.read_datestamp = SYSTIMESTAMP
       WHERE  nmq.batch_id = pi_batch_id;
-    ELSE
-      UPDATE  notify_message_queue nmq
-      SET     nmq.message_status = pi_message_status,
-              nmq.read_datestamp = SYSTIMESTAMP
-      WHERE     nmq.batch_id = pi_batch_id
-      AND       nmq.message_id = pi_message_id;
-    END IF;
     RETURN  v_error_id;
-  END f_update_message_status;
+  END f_update_batch_status;
+
 END pkg_notify_wrap;
 /
 

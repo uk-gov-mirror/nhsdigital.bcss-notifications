@@ -56,15 +56,15 @@ def mark_batch_as_sent(batch_id: str) -> int | None:
     with database.cursor() as cursor:
         try:
             result = cursor.callfunc(
-                "PKG_NOTIFY_WRAP.f_update_message_status",
+                "PKG_NOTIFY_WRAP.f_update_batch_status",
                 oracledb.NUMBER,
-                [batch_id, None, "sending"],
+                [batch_id, "sending"],
             )
             cursor.connection.commit()
             return result
         except oracledb.Error as e:
             logging.error(
-                "Error calling PKG_NOTIFY_WRAP.f_update_message_status for batch %s: %s",
+                "Error calling PKG_NOTIFY_WRAP.f_update_batch_status for batch %s: %s",
                 batch_id,
                 e,
             )

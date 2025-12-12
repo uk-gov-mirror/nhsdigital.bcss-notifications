@@ -90,7 +90,7 @@ def test_update_message_status(mock_cursor):
     mock_cursor_contextmanager.var.return_value = mock_var
 
     response_code = message_status_recorder.update_message_status(
-        mock_cursor_contextmanager, "batch_id", "message_reference_1"
+        mock_cursor_contextmanager, "message_reference_1"
     )
 
     assert mock_cursor_contextmanager.execute.call_count == 1
@@ -98,13 +98,12 @@ def test_update_message_status(mock_cursor):
     mock_cursor_contextmanager.execute.assert_called_once_with(
         """
             begin
-                :out_val := pkg_notify_wrap.f_update_message_status(:in_val1, :in_val2, :in_val3);
+                :out_val := pkg_notify_wrap.f_update_message_status(:in_val1, :in_val2);
             end;
         """,
         {
-            "in_val1": "batch_id",
-            "in_val2": "message_reference_1",
-            "in_val3": "read",
+            "in_val1": "message_reference_1",
+            "in_val2": "read",
             "out_val": mock_var,
         },
     )

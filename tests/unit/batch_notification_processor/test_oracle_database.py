@@ -89,9 +89,9 @@ def test_mark_batch_as_sent(mock_database):
     oracle_database.mark_batch_as_sent(batch_id)
 
     mock_cursor.callfunc.assert_called_with(
-        "PKG_NOTIFY_WRAP.f_update_message_status",
+        "PKG_NOTIFY_WRAP.f_update_batch_status",
         oracledb.NUMBER,
-        [batch_id, None, "sending"],
+        [batch_id, "sending"],
     )
     mock_cursor.connection.commit.assert_called_once()
 

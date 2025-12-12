@@ -31,11 +31,10 @@ def test_record_message_statuses(mock_record_message_status):
     )
 
 
-#@patch("message_status_recorder.fetch_batch_id_for_message", return_value="batch_id_1")
 @patch("message_status_recorder.update_message_status", return_value=12)
 @patch("database.cursor")
 def test_record_message_status(
-    mock_cursor, mock_update_message_status #, mock_fetch_batch_id_for_message
+    mock_cursor, mock_update_message_status
 ):
     """Test the record_message_status calls update_message_status function."""
     json_data = {"attributes": {"messageReference": "message_reference_1"}}
@@ -44,7 +43,6 @@ def test_record_message_status(
         message_status_recorder.record_message_status(json_data)
 
     assert mock_update_message_status.call_count == 1
-    #assert mock_fetch_batch_id_for_message.call_count == 1
     mock_update_message_status.assert_any_call(
         mock_cursor().__enter__(), "message_reference_1"
     )

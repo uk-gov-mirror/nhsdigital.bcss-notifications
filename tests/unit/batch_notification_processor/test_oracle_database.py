@@ -64,7 +64,15 @@ def test_get_recipients(mock_database):
                        address_line_3,
                        address_line_4,
                        address_line_5,
-                       postcode
+                       postcode,
+                       sender_org_name,
+                       sender_org_address_line_1,
+                       sender_org_address_line_1,
+                       sender_org_address_line_1,
+                       sender_org_address_line_1,
+                       sender_org_address_line_1,
+                       sender_org_postcode,
+                       sender_org_email
                 FROM v_notify_message_queue
                 WHERE batch_id = :batch_id
                 """,

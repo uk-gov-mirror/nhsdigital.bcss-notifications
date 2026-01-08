@@ -204,7 +204,15 @@ AS
           nmq.address_line_3,
           nmq.address_line_4,
           nmq.address_line_5,
-          nmq.postcode
+          nmq.postcode,
+          nmq.sender_org_name,
+          nmq.sender_org_address_line_1,
+          nmq.sender_org_address_line_1,
+          nmq.sender_org_address_line_1,
+          nmq.sender_org_address_line_1,
+          nmq.sender_org_address_line_1,
+          nmq.sender_org_postcode,
+          nmq.sender_org_email
   FROM MPI_NOTIFY_USER.notify_message_queue nmq
       INNER JOIN MPI_NOTIFY_USER.notify_message_definition nmd
          ON nmd.message_definition_id = nmq.message_definition_id;

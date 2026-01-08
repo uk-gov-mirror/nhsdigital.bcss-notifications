@@ -29,7 +29,8 @@ CREATE TABLE notify_message_queue (
   address_line_4        VARCHAR2 (40),
   address_line_5        VARCHAR2 (40),
   postcode              VARCHAR2 (12),
-  gp_practice_name      VARCHAR2 (100)
+  gp_practice_name      VARCHAR2 (100),
+  sender_org_id         NUMBER (38)
 )
 RESULT_CACHE (MODE DEFAULT)
 TABLESPACE MPI_NOTIFY_USER
@@ -205,14 +206,14 @@ AS
           nmq.address_line_4,
           nmq.address_line_5,
           nmq.postcode,
-          nmq.sender_org_name,
-          nmq.sender_org_address_line_1,
-          nmq.sender_org_address_line_1,
-          nmq.sender_org_address_line_1,
-          nmq.sender_org_address_line_1,
-          nmq.sender_org_address_line_1,
-          nmq.sender_org_postcode,
-          nmq.sender_org_email
+          'Org Name' AS sender_org_name,
+          'Org Add 1' AS sender_org_address_line_1,
+          'Org Add 2' AS sender_org_address_line_2,
+          'Org Add 3' AS sender_org_address_line_3,
+          'Org Add 4' AS sender_org_address_line_4,
+          'Org Add 5' AS sender_org_address_line_5,
+          'OrgPCode' AS sender_org_postcode,
+          'org@email.nhs.net' AS sender_org_email
   FROM MPI_NOTIFY_USER.notify_message_queue nmq
       INNER JOIN MPI_NOTIFY_USER.notify_message_definition nmd
          ON nmd.message_definition_id = nmq.message_definition_id;
@@ -250,7 +251,7 @@ INSERT INTO MPI_NOTIFY_USER.notify_message_record (message_id, batch_id, message
 
 COMMIT;
 
--- Update the view to include message_status
+-- NEEDS REMOVING AS REDUNDANT - Update the view to include message_status
 CREATE OR REPLACE VIEW MPI_NOTIFY_USER.v_notify_message_record AS
 SELECT message_id, batch_id, message_status FROM MPI_NOTIFY_USER.notify_message_record;
 

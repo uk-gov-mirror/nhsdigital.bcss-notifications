@@ -67,10 +67,10 @@ def test_get_recipients(mock_database):
                        postcode,
                        sender_org_name,
                        sender_org_address_line_1,
-                       sender_org_address_line_1,
-                       sender_org_address_line_1,
-                       sender_org_address_line_1,
-                       sender_org_address_line_1,
+                       sender_org_address_line_2,
+                       sender_org_address_line_3,
+                       sender_org_address_line_4,
+                       sender_org_address_line_5,
                        sender_org_postcode,
                        sender_org_email
                 FROM v_notify_message_queue

@@ -72,9 +72,9 @@ def test_fetch_batch_id_for_message():
             "SELECT nmq.batch_id FROM v_notify_message_queue nmq "
             "WHERE nmq.message_id = :message_reference "
             "AND nmq.message_status = 'sending' "
-            "UNION "
-            "SELECT nmr.batch_id FROM v_notify_message_record nmr "
-            "WHERE nmr.message_id = :message_reference "
+            # "UNION "
+            # "SELECT nmr.batch_id FROM v_notify_message_record nmr "
+            # "WHERE nmr.message_id = :message_reference "
         ),
         {"message_reference": "message_reference_1"},
     )

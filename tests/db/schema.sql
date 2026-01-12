@@ -252,7 +252,7 @@ INSERT INTO MPI_NOTIFY_USER.notify_message_record (message_id, batch_id, message
 COMMIT;
 
 -- NEEDS REMOVING AS REDUNDANT - Update the view to include message_status
-CREATE OR REPLACE VIEW MPI_NOTIFY_USER.v_notify_message_record AS
-SELECT message_id, batch_id, message_status FROM MPI_NOTIFY_USER.notify_message_record;
+-- CREATE OR REPLACE VIEW MPI_NOTIFY_USER.v_notify_message_record AS
+-- SELECT message_id, batch_id, message_status FROM MPI_NOTIFY_USER.notify_message_record;
 
-COMMIT;
+-- COMMIT;

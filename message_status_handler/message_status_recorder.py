@@ -60,10 +60,10 @@ def fetch_batch_id_for_message(cursor: Cursor, message_reference: str) -> str | 
             "FROM v_notify_message_queue nmq "
             "WHERE nmq.message_id = :message_reference "
             "AND nmq.message_status = 'sending' "
-            "UNION "
-            "SELECT nmr.batch_id "
-            "FROM v_notify_message_record nmr "
-            "WHERE nmr.message_id = :message_reference "
+            # "UNION "
+            # "SELECT nmr.batch_id "
+            # "FROM v_notify_message_record nmr "
+            # "WHERE nmr.message_id = :message_reference "
         ),
         {"message_reference": message_reference},
     )
@@ -77,10 +77,10 @@ def check_message_exists(cursor: Cursor, message_reference: str) -> str | None:
             "SELECT nmq.message_id "
             "FROM v_notify_message_queue nmq "
             "WHERE nmq.message_id = :message_reference "
-            "UNION "
-            "SELECT nmr.message_id "
-            "FROM v_notify_message_record nmr "
-            "WHERE nmr.message_id = :message_reference"
+            # "UNION "
+            # "SELECT nmr.message_id "
+            # "FROM v_notify_message_record nmr "
+            # "WHERE nmr.message_id = :message_reference"
         ),
         {"message_reference": message_reference},
     )

@@ -2,7 +2,7 @@ import database
 from oracledb import Cursor
 import logging
 
-from exceptions import MessageDoesNotExistError, MessageUpdateError
+from exceptions import MessageUpdateError
 
 
 def record_message_statuses(json_data: dict) -> dict[str, int]:

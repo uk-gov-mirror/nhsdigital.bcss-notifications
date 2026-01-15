@@ -57,27 +57,27 @@ def test_record_message_status_no_message_reference():
     assert response_code == 0
 
 
-def test_fetch_batch_id_for_message():
-    """Test the fetch_batch_id_for_message function."""
-    mock_cursor = Mock()
-    mock_cursor.fetchone.return_value = ("batch_id_1",)
+# def test_fetch_batch_id_for_message():
+#     """Test the fetch_batch_id_for_message function."""
+#     mock_cursor = Mock()
+#     mock_cursor.fetchone.return_value = ("batch_id_1",)
 
-    response = message_status_recorder.fetch_batch_id_for_message(
-        mock_cursor, "message_reference_1"
-    )
+#     response = message_status_recorder.fetch_batch_id_for_message(
+#         mock_cursor, "message_reference_1"
+#     )
 
-    assert response == "batch_id_1"
-    mock_cursor.execute.assert_called_once_with(
-        (
-            "SELECT nmq.batch_id FROM v_notify_message_queue nmq "
-            "WHERE nmq.message_id = :message_reference "
-            "AND nmq.message_status = 'sending' "
-            # "UNION "
-            # "SELECT nmr.batch_id FROM v_notify_message_record nmr "
-            # "WHERE nmr.message_id = :message_reference "
-        ),
-        {"message_reference": "message_reference_1"},
-    )
+#     assert response == "batch_id_1"
+#     mock_cursor.execute.assert_called_once_with(
+#         (
+#             "SELECT nmq.batch_id FROM v_notify_message_queue nmq "
+#             "WHERE nmq.message_id = :message_reference "
+#             "AND nmq.message_status = 'sending' "
+#             # "UNION "
+#             # "SELECT nmr.batch_id FROM v_notify_message_record nmr "
+#             # "WHERE nmr.message_id = :message_reference "
+#         ),
+#         {"message_reference": "message_reference_1"},
+#     )
 
 
 @patch("database.cursor")

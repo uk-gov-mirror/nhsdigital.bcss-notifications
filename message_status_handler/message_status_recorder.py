@@ -55,25 +55,6 @@ def record_message_status(json_data: dict) -> int:
 
     return response_code
 
-
-# def fetch_batch_id_for_message(cursor: Cursor, message_reference: str) -> str | None:
-#     cursor.execute(
-#         (
-#             "SELECT nmq.batch_id "
-#             "FROM v_notify_message_queue nmq "
-#             "WHERE nmq.message_id = :message_reference "
-#             "AND nmq.message_status = 'sending' "
-#             # "UNION "
-#             # "SELECT nmr.batch_id "
-#             # "FROM v_notify_message_record nmr "
-#             # "WHERE nmr.message_id = :message_reference "
-#         ),
-#         {"message_reference": message_reference},
-#     )
-#     result = cursor.fetchone()
-#     return result[0] if result else None
-
-
 # def check_message_exists(cursor: Cursor, message_reference: str) -> str | None:
 #     cursor.execute(
 #         (

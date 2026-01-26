@@ -250,9 +250,3 @@ INSERT INTO MPI_NOTIFY_USER.notify_message_record (message_id, batch_id, message
   VALUES ('966ecc3a-1e6b-5006-1ba6-f5457f496351', 'a9a92820-d538-51cd-a31d-a57d082e8c73', 'not read');
 
 COMMIT;
-
--- NEEDS REMOVING AS REDUNDANT - Update the view to include message_status
--- CREATE OR REPLACE VIEW MPI_NOTIFY_USER.v_notify_message_record AS
--- SELECT message_id, batch_id, message_status FROM MPI_NOTIFY_USER.notify_message_record;
-
--- COMMIT;

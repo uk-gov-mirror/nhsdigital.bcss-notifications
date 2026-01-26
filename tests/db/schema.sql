@@ -29,7 +29,8 @@ CREATE TABLE notify_message_queue (
   address_line_4        VARCHAR2 (40),
   address_line_5        VARCHAR2 (40),
   postcode              VARCHAR2 (12),
-  gp_practice_name      VARCHAR2 (100)
+  gp_practice_name      VARCHAR2 (100),
+  sender_org_id         NUMBER (38)
 )
 RESULT_CACHE (MODE DEFAULT)
 TABLESPACE MPI_NOTIFY_USER
@@ -87,8 +88,13 @@ CREATE OR REPLACE PACKAGE MPI_NOTIFY_USER.pkg_notify_wrap AS
     RETURN notify_message_definition.routing_plan_id%TYPE;
 
   FUNCTION f_update_message_status (
-    pi_batch_id         IN notify_message_queue.batch_id%TYPE,
     pi_message_id       IN notify_message_queue.message_id%TYPE,
+    pi_message_status   IN notify_message_queue.message_status%TYPE
+  )
+    RETURN message_types.message_type_id%TYPE;
+
+  FUNCTION f_update_batch_status (
+    pi_batch_id         IN notify_message_queue.batch_id%TYPE,
     pi_message_status   IN notify_message_queue.message_status%TYPE
   )
     RETURN message_types.message_type_id%TYPE;
@@ -152,28 +158,33 @@ CREATE OR REPLACE PACKAGE BODY MPI_NOTIFY_USER.pkg_notify_wrap AS
 	END f_get_next_batch;
 
   FUNCTION f_update_message_status (
-    pi_batch_id         IN notify_message_queue.batch_id%TYPE,
     pi_message_id       IN notify_message_queue.message_id%TYPE,
     pi_message_status   IN notify_message_queue.message_status%TYPE
   )
     RETURN message_types.message_type_id%TYPE IS
     v_error_id  message_types.message_type_id%TYPE := 0;
   BEGIN
-    IF pi_message_id IS NULL
-    THEN
+      UPDATE  notify_message_queue nmq
+      SET     nmq.message_status = pi_message_status,
+              nmq.read_datestamp = SYSTIMESTAMP
+      WHERE     nmq.message_id = pi_message_id;
+    RETURN  v_error_id;
+  END f_update_message_status;
+
+  FUNCTION f_update_batch_status (
+    pi_batch_id         IN notify_message_queue.batch_id%TYPE,
+    pi_message_status   IN notify_message_queue.message_status%TYPE
+  )
+    RETURN message_types.message_type_id%TYPE IS
+    v_error_id  message_types.message_type_id%TYPE := 0;
+  BEGIN
       UPDATE notify_message_queue nmq
       SET    nmq.message_status = pi_message_status,
              nmq.read_datestamp = SYSTIMESTAMP
       WHERE  nmq.batch_id = pi_batch_id;
-    ELSE
-      UPDATE  notify_message_queue nmq
-      SET     nmq.message_status = pi_message_status,
-              nmq.read_datestamp = SYSTIMESTAMP
-      WHERE     nmq.batch_id = pi_batch_id
-      AND       nmq.message_id = pi_message_id;
-    END IF;
     RETURN  v_error_id;
-  END f_update_message_status;
+  END f_update_batch_status;
+
 END pkg_notify_wrap;
 /
 
@@ -194,7 +205,15 @@ AS
           nmq.address_line_3,
           nmq.address_line_4,
           nmq.address_line_5,
-          nmq.postcode
+          nmq.postcode,
+          'Org Name' AS sender_org_name,
+          'Org Add 1' AS sender_org_address_line_1,
+          'Org Add 2' AS sender_org_address_line_2,
+          'Org Add 3' AS sender_org_address_line_3,
+          'Org Add 4' AS sender_org_address_line_4,
+          'Org Add 5' AS sender_org_address_line_5,
+          'OrgPCode' AS sender_org_postcode,
+          'org@email.nhs.net' AS sender_org_email
   FROM MPI_NOTIFY_USER.notify_message_queue nmq
       INNER JOIN MPI_NOTIFY_USER.notify_message_definition nmd
          ON nmd.message_definition_id = nmq.message_definition_id;
@@ -232,8 +251,8 @@ INSERT INTO MPI_NOTIFY_USER.notify_message_record (message_id, batch_id, message
 
 COMMIT;
 
--- Update the view to include message_status
-CREATE OR REPLACE VIEW MPI_NOTIFY_USER.v_notify_message_record AS
-SELECT message_id, batch_id, message_status FROM MPI_NOTIFY_USER.notify_message_record;
+-- NEEDS REMOVING AS REDUNDANT - Update the view to include message_status
+-- CREATE OR REPLACE VIEW MPI_NOTIFY_USER.v_notify_message_record AS
+-- SELECT message_id, batch_id, message_status FROM MPI_NOTIFY_USER.notify_message_record;
 
-COMMIT;
+-- COMMIT;

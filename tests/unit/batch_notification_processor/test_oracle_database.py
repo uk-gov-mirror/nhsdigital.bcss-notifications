@@ -64,7 +64,15 @@ def test_get_recipients(mock_database):
                        address_line_3,
                        address_line_4,
                        address_line_5,
-                       postcode
+                       postcode,
+                       sender_org_name,
+                       sender_org_address_line_1,
+                       sender_org_address_line_2,
+                       sender_org_address_line_3,
+                       sender_org_address_line_4,
+                       sender_org_address_line_5,
+                       sender_org_postcode,
+                       sender_org_email
                 FROM v_notify_message_queue
                 WHERE batch_id = :batch_id
                 """,
@@ -89,9 +97,9 @@ def test_mark_batch_as_sent(mock_database):
     oracle_database.mark_batch_as_sent(batch_id)
 
     mock_cursor.callfunc.assert_called_with(
-        "PKG_NOTIFY_WRAP.f_update_message_status",
+        "PKG_NOTIFY_WRAP.f_update_batch_status",
         oracledb.NUMBER,
-        [batch_id, None, "sending"],
+        [batch_id, "sending"],
     )
     mock_cursor.connection.commit.assert_called_once()
 

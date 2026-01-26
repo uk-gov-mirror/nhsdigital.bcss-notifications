@@ -28,12 +28,18 @@ def test_send_batch_message(mock_get_token):
                 Recipient(
                     "0000000000", "message_reference_0", "batch_id_0", "requested",
                     "routing_config_id_0", "address_line_01", "address_line_02",
-                    "address_line_03", "address_line_04", "address_line_05", "postcode_0"
+                    "address_line_03", "address_line_04", "address_line_05", "postcode_0",
+                    "sender_org_name_0", "sender_org_address_line_01", "sender_org_address_line_02",
+                    "sender_org_address_line_03", "sender_org_address_line_04", "sender_org_address_line_05",
+                    "sender_org_postcode_0", "sender_org_email_0"
                 ),
                 Recipient(
                     "1111111111", "message_reference_1", "batch_id_1", "requested",
                     "routing_config_id_1", "address_line_11", "address_line_12",
-                    "address_line_13", "address_line_14", "address_line_15", "postcode_1"
+                    "address_line_13", "address_line_14", "address_line_15", "postcode_1",
+                    "sender_org_name_1", "sender_org_address_line_11", "sender_org_address_line_12",
+                    "sender_org_address_line_13", "sender_org_address_line_14", "sender_org_address_line_15",
+                    "sender_org_postcode_1", "sender_org_email_1"
                 ),
             ]
         )
@@ -56,6 +62,14 @@ def test_send_batch_message(mock_get_token):
                                 "address_line_4_bcss": "address_line_04",
                                 "address_line_5_bcss": "address_line_05",
                                 "address_line_6_bcss": "postcode_0",
+                                # "sender_org_name_bcss": "sender_org_name_0",
+                                # "sender_org_address_line_1_bcss": "sender_org_address_line_01",
+                                # "sender_org_address_line_2_bcss": "sender_org_address_line_02",
+                                # "sender_org_address_line_3_bcss": "sender_org_address_line_03",
+                                # "sender_org_address_line_4_bcss": "sender_org_address_line_04",
+                                # "sender_org_address_line_5_bcss": "sender_org_address_line_05",
+                                # "sender_org_postcode_bcss": "sender_org_postcode_0",
+                                "sender_org_email_bcss": "sender_org_email_0",
                             },
                         },
                         {
@@ -68,6 +82,14 @@ def test_send_batch_message(mock_get_token):
                                 "address_line_4_bcss": "address_line_14",
                                 "address_line_5_bcss": "address_line_15",
                                 "address_line_6_bcss": "postcode_1",
+                                # "sender_org_name_bcss": "sender_org_name_1",
+                                # "sender_org_address_line_1_bcss": "sender_org_address_line_11",
+                                # "sender_org_address_line_2_bcss": "sender_org_address_line_12",
+                                # "sender_org_address_line_3_bcss": "sender_org_address_line_13",
+                                # "sender_org_address_line_4_bcss": "sender_org_address_line_14",
+                                # "sender_org_address_line_5_bcss": "sender_org_address_line_15",
+                                # "sender_org_postcode_bcss": "sender_org_postcode_1",
+                                "sender_org_email_bcss": "sender_org_email_1",
                             },
                         },
                     ],
@@ -97,7 +119,10 @@ def test_generate_message():
     recipient = Recipient(
         "0000000000", "message_reference_0", "batch_id_0", "requested",
         "routing_config_id_0", "address_line_01", "address_line_02",
-        "address_line_03", "address_line_04", "address_line_05", "postcode_0"
+        "address_line_03", "address_line_04", "address_line_05", "postcode_0",
+        "sender_org_name_0", "sender_org_address_line_01", "sender_org_address_line_02",
+        "sender_org_address_line_03", "sender_org_address_line_04", "sender_org_address_line_05",
+        "sender_org_postcode_0", "sender_org_email_0"
     )
 
     message = notify_api.generate_message(recipient)
@@ -111,6 +136,14 @@ def test_generate_message():
         "address_line_4_bcss": "address_line_04",
         "address_line_5_bcss": "address_line_05",
         "address_line_6_bcss": "postcode_0",
+        # "sender_org_name_bcss": "sender_org_name_0",
+        # "sender_org_address_line_1_bcss": "sender_org_address_line_01",
+        # "sender_org_address_line_2_bcss": "sender_org_address_line_02",
+        # "sender_org_address_line_3_bcss": "sender_org_address_line_03",
+        # "sender_org_address_line_4_bcss": "sender_org_address_line_04",
+        # "sender_org_address_line_5_bcss": "sender_org_address_line_05",
+        # "sender_org_postcode_bcss": "sender_org_postcode_0",
+        "sender_org_email_bcss": "sender_org_email_0",
     }
 
 
@@ -131,4 +164,12 @@ def test_generate_message_with_partial_data():
         "address_line_4_bcss": "",
         "address_line_5_bcss": "",
         "address_line_6_bcss": "",
+        # "sender_org_name_bcss": "",
+        # "sender_org_address_line_1_bcss": "",
+        # "sender_org_address_line_2_bcss": "",
+        # "sender_org_address_line_3_bcss": "",
+        # "sender_org_address_line_4_bcss": "",
+        # "sender_org_address_line_5_bcss": "",
+        # "sender_org_postcode_bcss": "",
+        "sender_org_email_bcss": "",
     }

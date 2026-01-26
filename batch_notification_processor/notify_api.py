@@ -63,6 +63,14 @@ def generate_message(recipient) -> dict:
             "address_line_4_bcss": (recipient.address_line_4 or ""),
             "address_line_5_bcss": (recipient.address_line_5 or ""),
             "address_line_6_bcss": (recipient.postcode or ""),
+            # "sender_org_name_bcss": (recipient.sender_org_name or ""),
+            # "sender_org_address_line_1_bcss": (recipient.sender_org_address_line_1 or ""),
+            # "sender_org_address_line_2_bcss": (recipient.sender_org_address_line_2 or ""),
+            # "sender_org_address_line_3_bcss": (recipient.sender_org_address_line_3 or ""),
+            # "sender_org_address_line_4_bcss": (recipient.sender_org_address_line_4 or ""),
+            # "sender_org_address_line_5_bcss": (recipient.sender_org_address_line_5 or ""),
+            # "sender_org_postcode_bcss": (recipient.sender_org_postcode or ""),
+            "sender_org_email_bcss": (recipient.sender_org_email or ""),
         },
     }
 # pylint: enable=no-member

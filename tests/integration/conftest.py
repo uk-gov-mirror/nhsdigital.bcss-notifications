@@ -88,9 +88,9 @@ class Helpers:
     def mark_batch_as_sent(batch_id):
         with Helpers.cursor() as cur:
             cur.callfunc(
-                "PKG_NOTIFY_WRAP.f_update_message_status",
+                "PKG_NOTIFY_WRAP.f_update_batch_status",
                 oracledb.NUMBER,
-                [batch_id, None, "sending"]
+                [batch_id, "sending"]
             )
             cur.connection.commit()
 

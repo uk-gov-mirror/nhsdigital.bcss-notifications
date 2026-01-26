@@ -39,7 +39,15 @@ def get_recipients(batch_id: str) -> list[Recipient]:
                        address_line_3,
                        address_line_4,
                        address_line_5,
-                       postcode
+                       postcode,
+                       sender_org_name,
+                       sender_org_address_line_1,
+                       sender_org_address_line_2,
+                       sender_org_address_line_3,
+                       sender_org_address_line_4,
+                       sender_org_address_line_5,
+                       sender_org_postcode,
+                       sender_org_email
                 FROM v_notify_message_queue
                 WHERE batch_id = :batch_id
                 """,
@@ -56,15 +64,15 @@ def mark_batch_as_sent(batch_id: str) -> int | None:
     with database.cursor() as cursor:
         try:
             result = cursor.callfunc(
-                "PKG_NOTIFY_WRAP.f_update_message_status",
+                "PKG_NOTIFY_WRAP.f_update_batch_status",
                 oracledb.NUMBER,
-                [batch_id, None, "sending"],
+                [batch_id, "sending"],
             )
             cursor.connection.commit()
             return result
         except oracledb.Error as e:
             logging.error(
-                "Error calling PKG_NOTIFY_WRAP.f_update_message_status for batch %s: %s",
+                "Error calling PKG_NOTIFY_WRAP.f_update_batch_status for batch %s: %s",
                 batch_id,
                 e,
             )
